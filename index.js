@@ -1,7 +1,7 @@
 const { app } = require('./src/config/api');
-const { usersRouter } = require('./src/routes/users');
+const { usuarioRouter } = require('./src/routes/usuario');
 
-app.use('/users', usersRouter);
+app.use('/usuarios', usuarioRouter);
 
 app.listen(process.env.NODE_PORT || 3333, () => {
     console.log("Server rodando");
