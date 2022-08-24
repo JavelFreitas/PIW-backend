@@ -1,21 +1,21 @@
 const usuarioModel = require("../model/usuario");
 
 
-getUsuarios = (req, res) => {
+getUsuarios = async (req, res) => {
     try{
-        res.status(200).json({usuarios: usuarioModel.getUsuarios()});
+        res.status(200).json({usuarios: await usuarioModel.getUsuarios()});
     }catch(e){
         res.status(400).json({message: "Something went wrong while trying to get student"});
     }
 };
 
-getUsuarioById = (req, res) => {
+getUsuarioById = async (req, res) => {
     try{
-        const UsuarioId = parseInt(req.params.id);
-        if(!UsuarioId) throw new Error();
+        const usuarioId = parseInt(req.params.id);
+        if(!usuarioId) throw new Error();
 
-        const Usuario = usuarioModel.getUsuarioById(UsuarioId)
-        res.status(200).json(Usuario)
+        const usuario = await usuarioModel.getUsuarioById(usuarioId)
+        res.status(200).json(usuario)
     }catch(e){
         res.status(400).json({message: "Something went wrong while trying to get stundent"});
     }
@@ -26,8 +26,20 @@ const postUsuario = async (req, res) => {
         const {
            id, name, email, senha
         } = req.body;
-        const usuario = usuarioModel.postUsuario({id, name, email, senha});
-        res.status(200).json({usuario});
+        const usuario = await usuarioModel.postUsuario({id, name, email, senha});
+        res.status(200).json({...usuario});
+    }catch(e){
+        res.status(400).json({message: e.message});
+    }
+}
+
+const deleteUsuario = async (req, res) => {
+    try{
+        const {
+           id
+        } = req.params;
+        const response = await usuarioModel.deleteUsuario({id});
+        res.status(200).json({response});
     }catch(e){
         res.status(400).json({message: e.message});
     }
@@ -36,5 +48,6 @@ const postUsuario = async (req, res) => {
 module.exports = {
     getUsuarios,
     getUsuarioById,
-    postUsuario
+    postUsuario,
+    deleteUsuario
 }

@@ -8,6 +8,8 @@ usuarioRouter.get('/:id', usuarioController.getUsuarioById);
 
 usuarioRouter.post('/', usuarioController.postUsuario);
 
+usuarioRouter.delete('/:id', usuarioController.deleteUsuario);
+
 
 module.exports = {
     usuarioRouter

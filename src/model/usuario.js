@@ -19,15 +19,15 @@ let mockUsers = [
     },
 ]
 
-const getUsuarios = () => { 
+const getUsuarios = async () => { 
     return mockUsers
 }
 
-const getUsuarioById = (id) => {
+const getUsuarioById = async (id) => {
     return mockUsers.find(usuario => usuario.id === id);
 }
 
-const postUsuario = (usuario) => {
+const postUsuario = async (usuario) => {
     try{
         const idExists = mockUsers.find(mock => mock.id === usuario.id);
         if(idExists) throw new Error(`Usuario ${usuario.id} já existe`);
@@ -40,9 +40,25 @@ const postUsuario = (usuario) => {
     }
 }
 
+const deleteUsuario = async (usuario) => {
+    try{
+        const idExists = mockUsers.find(mock => mock.id === parseInt(usuario.id));
+        if(!idExists) throw new Error(`Usuario ${usuario.id} não existe`);
+        
+        mockUsers = mockUsers.filter(user => !(user.id === parseInt(usuario.id)));
+
+        return {message: "Usuario removido com sucesso"};
+    }catch(e) {
+        return {
+            message: e.message || "Could not delete student"
+        }
+    }
+}
+
 
 module.exports = {
     getUsuarios,
     getUsuarioById,
-    postUsuario
+    postUsuario,
+    deleteUsuario
 }
