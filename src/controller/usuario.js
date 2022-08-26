@@ -1,9 +1,8 @@
 const usuarioModel = require("../model/usuario");
 
-
 getUsuarios = async (req, res) => {
     try{
-        res.status(200).json({usuarios: await usuarioModel.getUsuarios()});
+        res.status(200).json(await usuarioModel.getUsuarios());
     }catch(e){
         res.status(400).json({message: "Something went wrong while trying to get student"});
     }
@@ -15,9 +14,13 @@ getUsuarioById = async (req, res) => {
         if(!usuarioId) throw new Error();
 
         const usuario = await usuarioModel.getUsuarioById(usuarioId)
+
+        if(!usuario){
+            throw new Error(`Could not find user ${usuarioId}`);
+        }
         res.status(200).json(usuario)
     }catch(e){
-        res.status(400).json({message: "Something went wrong while trying to get stundent"});
+        res.status(400).json({message: "Something went wrong while trying to get student"});
     }
 }
 
@@ -38,8 +41,7 @@ const deleteUsuario = async (req, res) => {
         const {
            id
         } = req.params;
-        const response = await usuarioModel.deleteUsuario({id});
-        res.status(200).json({response});
+        res.status(200).json(await usuarioModel.deleteUsuario({id}));
     }catch(e){
         res.status(400).json({message: e.message});
     }
