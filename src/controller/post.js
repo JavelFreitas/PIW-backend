@@ -37,8 +37,24 @@ const createPost = async (req, res) => {
     }
 }
 
+const deletePost = async (req, res) => {
+    try{
+        const {id} = req.params;
+
+        if(!id) {
+            throw new Error('Invalid post id sent');
+        }
+
+        const response = await postModel.deletePost({id});
+        res.status(200).json(response);
+    }catch(e){
+        res.status(400).json({message: e.message || "Could not delete post"});
+    }
+}
+
 module.exports = {
     getPosts,
     getPostsById,
-    createPost
+    createPost,
+    deletePost
 }
