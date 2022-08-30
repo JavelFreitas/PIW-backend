@@ -1,25 +1,25 @@
 let mockUsers = [
     {
         id: 1,
-        name: "Leticia Farias",
+        nome: "Leticia Farias",
         email: "leticiaf@gmail.com",
         senha: "123"
     },
     {
         id: 2,
-        name: "Javel Queiroz",
+        nome: "Javel Queiroz",
         email: "javel@gmail.com",
         senha: "123"
     },
     {
         id: 3,
-        name: "Victor Farias",
+        nome: "Victor Farias",
         email: "victorF@gmail.com",
         senha: "123"
     },
 ]
 
-const getUsuarios = async () => { 
+const getUsuarios = async () => {
     return mockUsers
 }
 
@@ -28,12 +28,12 @@ const getUsuarioById = async (id) => {
 }
 
 const postUsuario = async (usuario) => {
-    try{
+    try {
         const idExists = mockUsers.find(mock => mock.id === usuario.id);
-        if(idExists) throw new Error(`Usuario ${usuario.id} já existe`);
+        if (idExists) throw new Error(`Usuario ${usuario.id} já existe`);
         mockUsers.push(usuario);
         return usuario;
-    }catch(e) {
+    } catch (e) {
         return {
             message: e.message || "Could not insert student"
         }
@@ -41,14 +41,14 @@ const postUsuario = async (usuario) => {
 }
 
 const deleteUsuario = async (usuario) => {
-    try{
+    try {
         const idExists = mockUsers.find(mock => mock.id === parseInt(usuario.id));
-        if(!idExists) throw new Error(`Usuario ${usuario.id} não existe`);
-        
+        if (!idExists) throw new Error(`Usuario ${usuario.id} não existe`);
+
         mockUsers = mockUsers.filter(user => !(user.id === parseInt(usuario.id)));
 
-        return {message: "Usuario removido com sucesso"};
-    }catch(e) {
+        return { message: "Usuario removido com sucesso" };
+    } catch (e) {
         return {
             message: e.message || "Could not delete student"
         }

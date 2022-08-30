@@ -1,18 +1,19 @@
 let mockPosts = [
     {
-    id: 1,
-    texto: "Oi, tudo bem?",
-    likes: 6
+        id: 1,
+        texto: "Oi, tudo bem?",
+        likes: 6
     },
     {
-    id: 5,
-    texto: "Tudo bom! E vc?",
-    likes: 6
+        id: 5,
+        texto: "Tudo bom! E vc?",
+        likes: 6
     }
 ]
 
 const getPosts = async () => {
-    return mockPosts
+    await mockPosts.sort((a, b) => { a.id <= b.id })
+    return mockPosts;
 }
 
 const getPostById = async (id) => {
@@ -20,12 +21,12 @@ const getPostById = async (id) => {
 }
 
 const createPost = async (post) => {
-    try{
+    try {
         const idExists = mockPosts.find(mock => mock.id === post.id);
-        if(idExists) throw new Error(`Post ${post.id} já existe`);
+        if (idExists) throw new Error(`Post ${post.id} já existe`);
         mockPosts.push(post);
         return post;
-    }catch(e) {
+    } catch (e) {
         return {
             message: e.message || "Could not insert post"
         }
@@ -33,14 +34,14 @@ const createPost = async (post) => {
 }
 
 const deletePost = async (post) => {
-    try{
+    try {
         const idExists = mockPosts.find(mock => mock.id === parseInt(post.id));
-        if(!idExists) throw new Error(`Post ${post.id} não existe`);
-        
+        if (!idExists) throw new Error(`Post ${post.id} não existe`);
+
         mockPosts = mockPosts.filter(mockPost => !(mockPost.id === parseInt(post.id)));
 
-        return {message: "Post removido com sucesso"};
-    }catch(e) {
+        return { message: "Post removido com sucesso" };
+    } catch (e) {
         return {
             message: e.message || "Could not delete post"
         }

@@ -7,8 +7,8 @@ describe("post '/' - Create User", () => {
     it("should respond with 200 status code", async () => {
         const response = await request(app).post(`${user_url}`).send({
             id: 1,
-            name: 'name', 
-            email: 'email@gmail.com', 
+            nome: 'nome',
+            email: 'email@gmail.com',
             senha: '123'
         });
 
