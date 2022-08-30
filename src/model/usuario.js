@@ -35,7 +35,7 @@ const postUsuario = async (usuario) => {
         return usuario;
     } catch (e) {
         return {
-            message: e.message || "Could not insert student"
+            message: e.message || "Não foi possível inserir usuário"
         }
     }
 }
@@ -50,7 +50,7 @@ const deleteUsuario = async (usuario) => {
         return { message: "Usuario removido com sucesso" };
     } catch (e) {
         return {
-            message: e.message || "Could not delete student"
+            message: e.message || "Não foi possível deletar usuário"
         }
     }
 }

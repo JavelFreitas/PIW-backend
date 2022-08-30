@@ -5,23 +5,23 @@ getPosts = async (req, res) => {
     try {
         res.status(200).json(await postModel.getPosts());
     } catch (e) {
-        res.status(400).json({ message: "Something went wrong while trying to get posts" });
+        res.status(400).json({ message: "Não foi possível buscar posts" });
     }
 };
 
 getPostsById = async (req, res) => {
     try {
         const { id } = req.params;
-        if (!id) throw new Error();
+        if (isNaN(id)) throw new Error();
 
         const post = await postModel.getPostById(parseInt(id))
 
         if (!post) {
-            throw new Error(`Could not find post ${id}`);
+            throw { status: 404, message: `Post ${id} não existe` };
         }
         res.status(200).json(post)
     } catch (e) {
-        res.status(400).json({ message: e.message || `Could not get post ${id}` })
+        res.status(e.status || 400).json({ message: e.message || `Algo deu errado ao buscar post` })
     }
 }
 
@@ -46,13 +46,13 @@ const deletePost = async (req, res) => {
         const { id } = req.params;
 
         if (!id) {
-            throw new Error('Invalid post id sent');
+            throw new Error('ID inválido recebido');
         }
 
         const response = await postModel.deletePost({ id });
         res.status(200).json(response);
     } catch (e) {
-        res.status(400).json({ message: e.message || "Could not delete post" });
+        res.status(400).json({ message: e.message || "Não foi possível deletar post" });
     }
 }
 

@@ -12,8 +12,12 @@ let mockPosts = [
 ]
 
 const getPosts = async () => {
-    await mockPosts.sort((a, b) => { a.id <= b.id })
-    return mockPosts;
+
+    return await mockPosts.sort((a, b) => {
+        if (a.id < b.id) return -1
+        if (a.id > b.id) return 1;
+        return 0;
+    });
 }
 
 const getPostById = async (id) => {
@@ -28,7 +32,7 @@ const createPost = async (post) => {
         return post;
     } catch (e) {
         return {
-            message: e.message || "Could not insert post"
+            message: e.message || "Não foi possível inserir post"
         }
     }
 }
@@ -36,14 +40,14 @@ const createPost = async (post) => {
 const deletePost = async (post) => {
     try {
         const idExists = mockPosts.find(mock => mock.id === parseInt(post.id));
-        if (!idExists) throw new Error(`Post ${post.id} não existe`);
+        if (!idExists) throw new Error(`Post ${post.id} não foi encontrado`);
 
         mockPosts = mockPosts.filter(mockPost => !(mockPost.id === parseInt(post.id)));
 
         return { message: "Post removido com sucesso" };
     } catch (e) {
         return {
-            message: e.message || "Could not delete post"
+            message: e.message || "Não foi possível deletar post"
         }
     }
 }
