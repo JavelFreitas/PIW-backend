@@ -28,10 +28,10 @@ getPostsById = async (req, res) => {
 const createPost = async (req, res) => {
     try{
         const {
-            id, texto, likes
+            id_usuario, texto, likes
         } = req.body;
-        const post = await postModel.createPost({id, texto, likes});
-        res.status(200).json({...post});
+        const post = await postModel.create({id_usuario, texto, likes});
+        res.status(200).json(post);
     }catch(e){
         res.status(400).json({message: e.message});
     }
