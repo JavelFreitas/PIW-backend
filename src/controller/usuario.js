@@ -1,8 +1,10 @@
 const usuarioModel = require("../model/usuario");
+const { manyUsuarioFormatter, usuarioFormatter } = require("../view/usuario");
 
 getUsuarios = async (req, res) => {
   try {
-    res.status(200).json(await usuarioModel.find());
+    let response = await usuarioModel.find()
+    res.status(200).json(manyUsuarioFormatter(response));
   } catch (e) {
     res.status(400).json({ message: "Algo deu errado ao buscar por usuários" });
   }
@@ -18,7 +20,7 @@ getUsuarioById = async (req, res) => {
     if (!usuario.length) {
       throw new Error(`Could not find user ${usuarioId}`);
     }
-    res.status(200).json(usuario[0]);
+    res.status(200).json(usuarioFormatter(usuario[0]));
   } catch (e) {
     res.status(400).json({ message: "Algo deu errado ao buscar por usuários" });
   }
@@ -27,10 +29,21 @@ getUsuarioById = async (req, res) => {
 const postUsuario = async (req, res) => {
   try {
     const {
-      id, name, email, senha
+     nome, email, senha
     } = req.body;
-    const usuario = await usuarioModel.create({ id, nome: name, email, senha });
-    res.status(200).json(usuario);
+
+    const duplicate = await usuarioModel.findOne({
+      email: {
+        '$eq': email,
+      }
+    })
+
+    if(!!duplicate){
+      throw new Error('Email já cadastrado')
+    }
+
+    const usuario = await usuarioModel.create({ nome, email, senha });
+    res.status(200).json(usuarioFormatter(usuario));
   } catch (e) {
     res.status(400).json({ message: e.message });
   }
