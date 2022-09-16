@@ -13,14 +13,14 @@ getUsuarioById = async (req, res) => {
     const usuarioId = req.params.id;
     if (!usuarioId) throw new Error();
 
-    const usuario = (await usuarioModel.find({_id : {$in : [usuarioId]}}));
+    const usuario = (await usuarioModel.find({ _id: { $in: [usuarioId] } }));
 
-    if (!usuario) {
+    if (!usuario.length) {
       throw new Error(`Could not find user ${usuarioId}`);
     }
     res.status(200).json(usuario[0]);
   } catch (e) {
-    res.status(400).json({ message: "Something went wrong while trying to get student" });
+    res.status(400).json({ message: "Algo deu errado ao buscar por usuários" });
   }
 }
 
@@ -42,11 +42,11 @@ const deleteUsuario = async (req, res) => {
       id
     } = req.params;
 
-    if(!id) throw new Error('ID inválido fornecido');
+    if (!id) throw new Error('ID inválido fornecido');
     const response = await usuarioModel.deleteOne({ _id: id });
 
-    if(!response.deletedCount) throw new Error(`Não foi possível deletar o usuário`);
-    res.status(200).json({message: `Usuario deletado com sucesso`});
+    if (!response.deletedCount) throw new Error(`Não foi possível deletar o usuário`);
+    res.status(200).json({ message: `Usuario deletado com sucesso` });
   } catch (e) {
     res.status(400).json({ message: e.message || 'Não foi possível deletar o usuário' });
   }
