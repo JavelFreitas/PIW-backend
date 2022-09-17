@@ -4,8 +4,8 @@ const { usuarioRouter } = require('./src/routes/usuario');
 const { postRouter } = require('./src/routes/post');
 const db = require('./src/config/database')
 
-app.use('/usuarios', usuarioRouter);
-app.use('/posts', postRouter);
+app.use('/api/usuarios', usuarioRouter);
+app.use('/api/posts', postRouter);
 
 db(process.env.DATABASE_URL);
 
