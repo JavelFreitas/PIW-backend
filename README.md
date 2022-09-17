@@ -36,7 +36,7 @@
 ```
 
 - [x] (get) /api/posts
-- [ ] (get) /api/posts/:id
+- [x] (get) /api/posts/:id
 - [ ] (get) /api/posts/:id/comentarios
 - [ ] (delete) /api/posts/:id
 

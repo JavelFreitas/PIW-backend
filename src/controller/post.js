@@ -19,8 +19,8 @@ getPostsById = async (req, res) => {
 
         const post = (await postModel.find({ _id: { $eq: id } }));
 
-        if(!post){
-            throw new Error(`Could not find post ${id}`);
+        if(post.length === 0){
+            throw new Error(`Não foi possível achar postagem`);
         }
         res.status(200).json(postOnlyFormatter(post[0]));
     }catch(e) {
