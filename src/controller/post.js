@@ -38,7 +38,7 @@ const createPost = async (req, res) => {
 
         const user = await userModel.find({_id : { $eq: [id_usuario]}});
 
-        if(!user.length) throw new Error('Usuario não encontrado.');
+        if(user.length === 0) throw new Error('Usuario não encontrado.');
 
         const post = await postModel.create({id_usuario, texto, likes});
         res.status(200).json(postOnlyFormatter(post));

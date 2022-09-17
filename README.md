@@ -24,7 +24,7 @@
 
 ### Post
 
-- [ ] (post) /api/posts
+- [x] (post) /api/posts
 
 ```json
 {
