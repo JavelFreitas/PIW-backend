@@ -17,12 +17,12 @@ getUsuarioById = async (req, res) => {
 
     const usuario = (await usuarioModel.find({ _id: { $in: [usuarioId] } }));
 
-    if (!usuario.length) {
-      throw new Error(`Could not find user ${usuarioId}`);
+    if (usuario.length === 0) {
+      throw new Error(`Não foi possível encontrar usuário`);
     }
     res.status(200).json(usuarioFormatter(usuario[0]));
   } catch (e) {
-    res.status(400).json({ message: "Algo deu errado ao buscar por usuários" });
+    res.status(400).json({ message: e.message || "Algo deu errado ao buscar por usuários" });
   }
 }
 
