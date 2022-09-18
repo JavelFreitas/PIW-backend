@@ -53,5 +53,5 @@
 
 ```
 
-- [ ] (get) /api/comentarios
+- [x] (get) /api/comentarios
 - [ ] (delete) /api/comentarios:id

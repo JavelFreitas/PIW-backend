@@ -9,7 +9,7 @@ const comentarioFormatter = function(comentario) {
 
 const manyComentarioFormatter = function(comentarios) {
     const formattedComentario = comentarios.map(comentario => {
-        return postFormatter(comentario);
+        return comentarioFormatter(comentario);
     })
     return formattedComentario
 }

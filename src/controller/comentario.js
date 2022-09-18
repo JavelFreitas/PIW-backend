@@ -1,7 +1,7 @@
 const comentarioModel = require('../model/comentario')
 const userModel = require('../model/usuario')
 const postModel = require('../model/post');
-const { comentarioFormatter } = require('../view/comentario');
+const { comentarioFormatter, manyComentarioFormatter } = require('../view/comentario');
 
 const createComentario = async (req, res) => {
     try{
@@ -26,6 +26,16 @@ const createComentario = async (req, res) => {
     }
 }
 
+const getComentario = async (req, res) => {
+    try{
+        const response = await comentarioModel.find();
+        res.status(200).json(manyComentarioFormatter(response));
+    }catch(e) {
+        res.status(400).json({message: e.message || 'Não foi possível buscar os comentários'})
+    }
+}
+
 module.exports = {
     createComentario,
+    getComentario
 }
