@@ -1,58 +1,92 @@
 const usuarioModel = require("../model/usuario");
+const postModel = require("../model/post");
+const { manyUsuarioFormatter, usuarioFormatter } = require("../view/usuario");
+const { manyPostFormatter } = require("../view/post");
 
 getUsuarios = async (req, res) => {
-    try {
-        res.status(200).json(await usuarioModel.getUsuarios());
-    } catch (e) {
-        res.status(400).json({ message: "Não foi possível buscar usuário" });
-    }
+  try {
+    let response = await usuarioModel.find()
+    res.status(200).json(manyUsuarioFormatter(response));
+  } catch (e) {
+    res.status(400).json({ message: "Algo deu errado ao buscar por usuários" });
+  }
 };
 
 getUsuarioById = async (req, res) => {
-    try {
-        const usuarioId = parseInt(req.params.id);
-        if (isNaN(usuarioId)) throw new Error();
+  try {
+    const usuarioId = req.params.id;
+    if (!usuarioId) throw new Error();
 
-        const usuario = await usuarioModel.getUsuarioById(usuarioId)
+    const usuario = (await usuarioModel.find({ _id: { $in: [usuarioId] } }));
 
-        if (!usuario) {
-            throw { status: 404, message: `Usuário ${usuarioId} não foi encontrado` };
-        }
-        res.status(200).json(usuario);
-    } catch (e) {
-        res.status(e.status || 400).json({ message: e.message || "Algo deu errado ao buscar usuario" });
+    if (usuario.length === 0) {
+      throw new Error(`Não foi possível encontrar usuário`);
     }
+    res.status(200).json(usuarioFormatter(usuario[0]));
+  } catch (e) {
+    res.status(400).json({ message: e.message || "Algo deu errado ao buscar por usuários" });
+  }
+}
+
+getUsuarioPostsById = async (req, res) => {
+  try {
+    const usuarioId = req.params.id;
+    if (!usuarioId) throw new Error();
+
+    const posts = (await postModel.find({ id_usuario: { $eq: usuarioId } }));
+
+    if (posts.length === 0) {
+      throw new Error(`Não foi possível encontrar posts`);
+    }
+    res.status(200).json(manyPostFormatter(posts));
+  } catch (e) {
+    res.status(400).json({ message: e.message || "Algo deu errado ao buscar por posts" });
+  }
 }
 
 const postUsuario = async (req, res) => {
-    try {
-        const {
-            id = null, nome = null, email = null, senha = null
-        } = req.body;
-        if (!id || !nome || !email || !senha) {
-            throw new Error('Dado não fornecido');
-        }
-        const usuario = await usuarioModel.postUsuario({ id, nome, email, senha });
-        res.status(200).json({ ...usuario });
-    } catch (e) {
-        res.status(400).json({ message: e.message || 'Não foi possível inserir usuário' });
+  try {
+    const {
+     nome, email, senha
+    } = req.body;
+
+    const duplicate = await usuarioModel.findOne({
+      email: {
+        '$eq': email,
+      }
+    })
+
+    if(!!duplicate){
+      throw new Error('Email já cadastrado')
     }
+
+    const usuario = await usuarioModel.create({ nome, email, senha });
+    res.status(200).json(usuarioFormatter(usuario));
+  } catch (e) {
+    res.status(400).json({ message: e.message });
+  }
 }
 
 const deleteUsuario = async (req, res) => {
-    try {
-        const {
-            id
-        } = req.params;
-        res.status(200).json(await usuarioModel.deleteUsuario({ id }));
-    } catch (e) {
-        res.status(400).json({ message: e.message });
-    }
+  try {
+    const {
+      id
+    } = req.params;
+
+    if (!id) throw new Error('ID inválido fornecido');
+    const response = await usuarioModel.deleteOne({ _id: id });
+
+    if (!response.deletedCount) throw new Error(`Não foi possível deletar o usuário`);
+    res.status(200).json({ message: `Usuario deletado com sucesso` });
+  } catch (e) {
+    res.status(400).json({ message: e.message || 'Não foi possível deletar o usuário' });
+  }
 }
 
 module.exports = {
-    getUsuarios,
-    getUsuarioById,
-    postUsuario,
-    deleteUsuario
+  getUsuarios,
+  getUsuarioById,
+  postUsuario,
+  deleteUsuario,
+  getUsuarioPostsById,
 }
