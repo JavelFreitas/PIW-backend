@@ -1,5 +1,23 @@
 # Projeto de Interfaces WEB  
 
+### Instalar e rodar
+
+1. Baixar dependências 
+```bash
+npm install
+```
+
+2. Criar .env e adicionar variáveis de ambiente (use .env-sample como base)
+
+3. Rodar
+```bash
+npm start
+```
+
+OU
+```bash
+npm run nodemon
+```
 
 ## Endpoints  
 
