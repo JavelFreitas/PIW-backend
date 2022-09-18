@@ -54,4 +54,4 @@
 ```
 
 - [x] (get) /api/comentarios
-- [ ] (delete) /api/comentarios:id
+- [x] (delete) /api/comentarios/:id

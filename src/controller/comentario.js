@@ -35,7 +35,22 @@ const getComentario = async (req, res) => {
     }
 }
 
+const deleteComentarioById = async (req, res) => {
+    try{
+        const {id} = req.params;
+
+        if (!id) throw new Error('ID inválido fornecido');
+        const response = await comentarioModel.deleteOne({ _id: id });
+
+        if (response.deletedCount === 0) throw new Error(`Não foi possível deletar o comentario`);
+        res.status(200).json({ message: `Comentario deletado com sucesso` });
+    } catch (e) {
+        res.status(400).json({ message: e.message || 'Não foi possível deletar o comentario' });
+    }
+}
+
 module.exports = {
     createComentario,
-    getComentario
+    getComentario,
+    deleteComentarioById,
 }
