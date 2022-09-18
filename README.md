@@ -13,13 +13,11 @@
     "email": "victor.aefarias@gmail.com",
     "senha": "123"
 }
-
-
 ```
 
 - [x] (get) /api/usuarios
 - [x] (get) /api/usuarios/:id
-- [ ] (get) /api/usuarios/:id/posts
+- [x] (get) /api/usuarios/:id/posts
 - [x] (delete) /api/usuarios/:id
 
 ### Post

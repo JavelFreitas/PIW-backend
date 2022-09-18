@@ -1,5 +1,7 @@
 const usuarioModel = require("../model/usuario");
+const postModel = require("../model/post");
 const { manyUsuarioFormatter, usuarioFormatter } = require("../view/usuario");
+const { manyPostFormatter } = require("../view/post");
 
 getUsuarios = async (req, res) => {
   try {
@@ -23,6 +25,22 @@ getUsuarioById = async (req, res) => {
     res.status(200).json(usuarioFormatter(usuario[0]));
   } catch (e) {
     res.status(400).json({ message: e.message || "Algo deu errado ao buscar por usuários" });
+  }
+}
+
+getUsuarioPostsById = async (req, res) => {
+  try {
+    const usuarioId = req.params.id;
+    if (!usuarioId) throw new Error();
+
+    const posts = (await postModel.find({ id_usuario: { $eq: usuarioId } }));
+
+    if (posts.length === 0) {
+      throw new Error(`Não foi possível encontrar posts`);
+    }
+    res.status(200).json(manyPostFormatter(posts));
+  } catch (e) {
+    res.status(400).json({ message: e.message || "Algo deu errado ao buscar por posts" });
   }
 }
 
@@ -65,11 +83,10 @@ const deleteUsuario = async (req, res) => {
   }
 }
 
-//TODO[epic=User endpoint] get user by post id - after finish Posts
-
 module.exports = {
   getUsuarios,
   getUsuarioById,
   postUsuario,
   deleteUsuario,
+  getUsuarioPostsById,
 }
