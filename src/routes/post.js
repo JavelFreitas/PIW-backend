@@ -4,6 +4,7 @@ const postRouter = express.Router();
 
 postRouter.get('/', postController.getPosts);
 postRouter.get('/:id', postController.getPostsById);
+postRouter.get('/:id/comentarios', postController.getPostComentariosById);
 
 postRouter.post('/', postController.createPost);
 

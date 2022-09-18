@@ -6,6 +6,8 @@ usuarioRouter.get('/', usuarioController.getUsuarios);
 
 usuarioRouter.get('/:id', usuarioController.getUsuarioById);
 
+usuarioRouter.get('/:id/posts', usuarioController.getUsuarioPostsById);
+
 usuarioRouter.post('/', usuarioController.postUsuario);
 
 usuarioRouter.delete('/:id', usuarioController.deleteUsuario);
