@@ -50,15 +50,12 @@ const createPost = async (req, res) => {
 const deletePost = async (req, res) => {
     try{
         const {id} = req.params;
+        const response = await postModel.deleteOne({_id: {$eq: id}});
 
-        if(!id) {
-            throw new Error('Invalid post id sent');
-        }
-
-        const response = await postModel.deletePost({id});
-        res.status(200).json(response);
+        if(response.deletedCount < 1) throw new Error('Post não encontrado')
+        res.status(200).json({message: 'Post deletado com sucesso'});
     }catch(e){
-        res.status(400).json({message: e.message || "Could not delete post"});
+        res.status(400).json({message: e.message || "Não foi possícel deletar post"});
     }
 }
 

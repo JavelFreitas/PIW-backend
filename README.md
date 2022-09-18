@@ -38,7 +38,7 @@
 - [x] (get) /api/posts
 - [x] (get) /api/posts/:id
 - [ ] (get) /api/posts/:id/comentarios
-- [ ] (delete) /api/posts/:id
+- [x] (delete) /api/posts/:id
 
 ### Comentário
 
