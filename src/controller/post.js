@@ -1,6 +1,8 @@
 const postModel = require('../model/post');
 const userModel = require('../model/usuario');
+const comentarioModel = require('../model/comentario');
 const { manyPostFormatter, postFormatter, postOnlyFormatter } = require('../view/post');
+const { manyComentarioFormatter } = require('../view/comentario');
 
 
 getPosts = async (req, res) => {
@@ -24,11 +26,25 @@ getPostsById = async (req, res) => {
         }
         res.status(200).json(postOnlyFormatter(post[0]));
     }catch(e) {
-        res.status(400).json({message: e.message || `Could not get post ${id}`})
+        res.status(400).json({message: e.message || `Não foi possível achar postagem`})
     }
 };
 
-// TODO - /api/posts/:id/comentarios
+getPostComentariosById = async (req, res) => {
+    try{
+        const { id } = req.params;
+        if(!id) throw new Error();
+
+        const comentarios = (await comentarioModel.find({ id_post: { $eq: id } }));
+
+        if(comentarios.length === 0){
+            throw new Error(`Não foi possível achar comentários`);
+        }
+        res.status(200).json(manyComentarioFormatter(comentarios));
+    }catch(e) {
+        res.status(400).json({message: e.message || `Não foi possível achar comentários`})
+    }
+};
 
 const createPost = async (req, res) => {
     try{
@@ -63,5 +79,6 @@ module.exports = {
     getPosts,
     getPostsById,
     createPost,
-    deletePost
+    deletePost,
+    getPostComentariosById,
 }
