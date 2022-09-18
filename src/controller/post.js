@@ -15,9 +15,9 @@ getPosts = async (req, res) => {
 };
 
 getPostsById = async (req, res) => {
-    try{
+    try {
         const { id } = req.params;
-        if(!id) throw new Error();
+        if (isNaN(id)) throw new Error();
 
         const post = (await postModel.find({ _id: { $eq: id } }));
 
@@ -47,7 +47,7 @@ getPostComentariosById = async (req, res) => {
 };
 
 const createPost = async (req, res) => {
-    try{
+    try {
         const {
             id_usuario, texto, likes
         } = req.body;
