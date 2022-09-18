@@ -42,7 +42,7 @@
 
 ### Comentário
 
-- [ ] (post) /api/comentarios
+- [x] (post) /api/comentarios
 
 ```json
 {
