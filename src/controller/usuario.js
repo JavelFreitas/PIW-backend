@@ -2,6 +2,7 @@ const usuarioModel = require("../model/usuario");
 const postModel = require("../model/post");
 const { manyUsuarioFormatter, usuarioFormatter } = require("../view/usuario");
 const { manyPostFormatter } = require("../view/post");
+const bcrypt = require("bcrypt");
 
 getUsuarios = async (req, res) => {
   try {
@@ -59,8 +60,10 @@ const postUsuario = async (req, res) => {
     if(!!duplicate){
       throw new Error('Email já cadastrado')
     }
+    
+    const hashPassword = bcrypt.hashSync(senha, parseInt(process.env.BCRYPT_SALT, 10));
 
-    const usuario = await usuarioModel.create({ nome, email, senha });
+    const usuario = await usuarioModel.create({ nome, email, senha: hashPassword });
     res.status(200).json(usuarioFormatter(usuario));
   } catch (e) {
     res.status(400).json({ message: e.message });
