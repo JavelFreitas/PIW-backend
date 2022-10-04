@@ -15,9 +15,9 @@ getPosts = async (req, res) => {
 };
 
 getPostsById = async (req, res) => {
-    try {
+    try{
         const { id } = req.params;
-        if (isNaN(id)) throw new Error();
+        if(!id) throw new Error();
 
         const post = (await postModel.find({ _id: { $eq: id } }));
 
