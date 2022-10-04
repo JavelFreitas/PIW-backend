@@ -33,6 +33,7 @@ npm run nodemon
 }
 ```
 
+- [x] (post) /api/usuarios/login
 - [x] (get) /api/usuarios
 - [x] (get) /api/usuarios/:id
 - [x] (get) /api/usuarios/:id/posts

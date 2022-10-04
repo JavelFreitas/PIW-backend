@@ -9,11 +9,11 @@ usuarioRouter.post('/login', usuarioController.login);
 
 usuarioRouter.get('/', auth, usuarioController.getUsuarios);
 
-usuarioRouter.get('/:id', usuarioController.getUsuarioById);
+usuarioRouter.get('/:id', auth, usuarioController.getUsuarioById);
 
-usuarioRouter.get('/:id/posts', usuarioController.getUsuarioPostsById);
+usuarioRouter.get('/:id/posts', auth, usuarioController.getUsuarioPostsById);
 
-usuarioRouter.delete('/:id', usuarioController.deleteUsuario);
+usuarioRouter.delete('/:id', auth, usuarioController.deleteUsuario);
 
 module.exports = {
     usuarioRouter

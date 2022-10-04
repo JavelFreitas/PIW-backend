@@ -74,11 +74,15 @@ const postUsuario = async (req, res) => {
 
 const deleteUsuario = async (req, res) => {
   try {
-    const {
-      id
-    } = req.params;
+    const { id } = req.params;
+    const { token } = req.headers
 
     if (!id) throw new Error('ID inválido fornecido');
+
+    const userToken = jwt.decode(token);
+
+    if(userToken.id !== id) throw new Error('Token inválido para este usuário');
+
     const response = await usuarioModel.deleteOne({ _id: id });
 
     if (!response.deletedCount) throw new Error(`Não foi possível deletar o usuário`);
@@ -104,7 +108,6 @@ const login = async (req, res) => {
 
     const response = jwt.sign({
       id: findUserByEmail._id,
-      email: findUserByEmail.email
     }, process.env.JWT_SECRET_KEY)
 
     res.status(201).json({ token: response });
