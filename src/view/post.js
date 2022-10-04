@@ -9,7 +9,7 @@ const postFormatter = function(post) {
 
 const postOnlyFormatter = function(post) {
     return {
-        id_usuario: post.id_usuario,
+        id: post._id,
         texto: post.texto,
         likes: post.likes,
     }

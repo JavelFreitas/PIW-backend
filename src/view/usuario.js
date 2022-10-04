@@ -2,7 +2,15 @@ const usuarioFormatter = function(usuario) {
     return {
         id: usuario._id,
         nome: usuario.nome,
-        email: usuario.email
+        email: usuario.email,
+        senha: usuario.senha
+    }
+}
+
+const usuarioCreateFormatter = (usuario) => {
+    return {
+        nome: usuario.nome,
+        email: usuario.email,
     }
 }
 
@@ -17,4 +25,5 @@ const manyUsuarioFormatter = function(usuarios) {
 module.exports = {
     usuarioFormatter,
     manyUsuarioFormatter,
+    usuarioCreateFormatter
 };

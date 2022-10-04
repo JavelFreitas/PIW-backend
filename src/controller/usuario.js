@@ -1,6 +1,6 @@
 const usuarioModel = require("../model/usuario");
 const postModel = require("../model/post");
-const { manyUsuarioFormatter, usuarioFormatter } = require("../view/usuario");
+const { manyUsuarioFormatter, usuarioFormatter, usuarioCreateFormatter } = require("../view/usuario");
 const { manyPostFormatter } = require("../view/post");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -66,7 +66,7 @@ const postUsuario = async (req, res) => {
     const hashPassword = bcrypt.hashSync(senha, parseInt(process.env.BCRYPT_SALT, 10));
 
     const usuario = await usuarioModel.create({ nome, email, senha: hashPassword });
-    res.status(200).json(usuarioFormatter(usuario));
+    res.status(200).json(usuarioCreateFormatter(usuario));
   } catch (e) {
     res.status(400).json({ message: e.message });
   }
