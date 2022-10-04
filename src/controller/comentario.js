@@ -2,12 +2,18 @@ const comentarioModel = require('../model/comentario')
 const userModel = require('../model/usuario')
 const postModel = require('../model/post');
 const { comentarioFormatter, manyComentarioFormatter } = require('../view/comentario');
+const jwt = require('jsonwebtoken');
 
 const createComentario = async (req, res) => {
     try{
         const {
-            id_usuario, id_post, texto
+            id_post, texto
         } = req.body;
+        const {token} = req.headers;
+        const userToken = jwt.decode(token);
+        if(!userToken || !userToken.id) throw new Error('Token inválido');
+
+        const id_usuario = userToken.id;
 
         if(!texto) throw new Error('Texto inválido');
 
@@ -38,8 +44,18 @@ const getComentario = async (req, res) => {
 const deleteComentarioById = async (req, res) => {
     try{
         const {id} = req.params;
+        const {token} = req.headers;
+        const userToken = jwt.decode(token);
 
+        if(!userToken || !userToken.id) throw new Error('Token inválido');
         if (!id) throw new Error('ID inválido fornecido');
+
+        const id_usuario = userToken.id;
+        const comment = await comentarioModel.findById(id);
+        if(!comment) throw new Error('Comentário não encontrado');
+
+        if(id_usuario != comment.id_usuario) throw new Error("Comentario não pertence a este usuário");
+
         const response = await comentarioModel.deleteOne({ _id: id });
 
         if (response.deletedCount === 0) throw new Error(`Não foi possível deletar o comentario`);
